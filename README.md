@@ -16,7 +16,17 @@ An offline-first web app for music festival and convention attendees. Star the a
 
 ## Library
 
-Twelve real festivals on their real recurring calendar slots, with real stage names and headline-tier acts — Amsterdam Dance Event, EDC Orlando, Dreamstate, Countdown NYE, Ultra Miami, DGTL, EDC Las Vegas, Movement Detroit, Defqon.1, Tomorrowland, Creamfields, Electric Zoo — plus tour and club-night templates.
+**42 real electronic festivals** on their real recurring calendar slots, with real stage names and headline-tier acts, sorted by date and filterable by name, city, month or genre — plus tour and club-night templates. 418 sets in total.
+
+| Genre focus | Festivals |
+|---|---|
+| Techno | Amsterdam Dance Event, DGTL, Time Warp, Awakenings, Kappa FuturFestival, Dekmantel, Movement Detroit, Sónar, EXIT (mts Dance Arena), ARC |
+| House / tech-house | CRSSD, Portola, Elements, Wonderfruit, Snowbombing |
+| Mainstage / multi-genre | Ultra Miami · Europe · Japan, EDC Las Vegas · Orlando · Mexico, Tomorrowland (+ Winter), Creamfields, Parookaville, Mysteryland, UNTOLD, Djakarta Warehouse Project, Coachella's electronic tents, Electric Zoo, Countdown NYE |
+| Bass / dubstep | Lost Lands, Escape Halloween, Nocturnal Wonderland, Beyond Wonderland, Electric Forest, HARD Summer, Imagine |
+| Trance | A State of Trance Festival, Dreamstate |
+| Hardstyle / hardcore | Defqon.1 (+ Q-dance at Mysteryland, Bill's Factory at Parookaville) |
+| Drum & bass | Let It Roll (+ Racket Club at Snowbombing, Fortune Stage at UNTOLD) |
 
 > Because the app is fully offline with no live feed, and 2027 set times and full lineups aren't officially released yet, the timetables are **representative and fully editable**. Paste an official timetable whenever one drops.
 

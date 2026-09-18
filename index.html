@@ -359,13 +359,15 @@
   <section id="view-setup">
     <div class="card">
       <h2 class="section-title">🎚️ Festival Library</h2>
-      <p class="section-sub">Real EDM festivals & tours across Sep 2026 – 2027, ready to plan against.</p>
+      <p class="section-sub">Real electronic festivals across Sep 2026 – 2027 — techno, house, trance, bass, hardstyle, drum &amp; bass, melodic — ready to plan against.</p>
 
-      <label class="label" for="sampleSelect">Pick an event</label>
+      <label class="label" for="libFilter">Find an event</label>
+      <input type="text" id="libFilter" placeholder="Filter by name, city, month or genre — techno, Amsterdam, bass, Jul…" autocomplete="off" style="margin-bottom:10px;" />
       <div class="row" style="align-items:stretch;">
-        <select id="sampleSelect" style="flex:2;"></select>
+        <select id="sampleSelect" style="flex:2;" aria-label="Pick an event"></select>
         <button class="btn btn-primary" id="loadSampleBtn" style="flex:1;">Load Event</button>
       </div>
+      <div id="libCount" class="hint" style="margin-top:8px;"></div>
       <div class="note">
         Each event sits on its <b>real recurring calendar slot</b> with real stages and headline-tier acts. Since 2027
         set times &amp; full lineups aren’t officially released yet, they’re <b>representative and fully editable</b> —
@@ -521,7 +523,7 @@ const Data = {
   library: {
     festivals: [
       {
-        id: "ade-2026", name: "Amsterdam Dance Event", city: "Amsterdam, NL", dates: "Oct 15–17, 2026",
+        id: "ade-2026", name: "Amsterdam Dance Event", city: "Amsterdam, NL", dates: "Oct 15–17, 2026", start: "2026-10-15", genre: "Techno · House",
         stages: ["Shelter", "Warehouse Elementenstraat", "Melkweg"], walkDefault: 15,
         transit: { "Shelter||Warehouse Elementenstraat": 18, "Shelter||Melkweg": 20, "Warehouse Elementenstraat||Melkweg": 22 },
         sets: [
@@ -535,7 +537,7 @@ const Data = {
         ]
       },
       {
-        id: "edc-orlando-2026", name: "EDC Orlando", city: "Orlando, FL", dates: "Nov 13–15, 2026",
+        id: "edc-orlando-2026", name: "EDC Orlando", city: "Orlando, FL", dates: "Nov 13–15, 2026", start: "2026-11-13", genre: "Mainstage · Bass · House",
         stages: ["kineticFIELD", "circuitGROUNDS", "bassPOD", "neonGARDEN"], walkDefault: 9,
         transit: { "kineticFIELD||circuitGROUNDS": 7, "kineticFIELD||bassPOD": 12, "kineticFIELD||neonGARDEN": 10, "circuitGROUNDS||bassPOD": 8, "circuitGROUNDS||neonGARDEN": 9, "bassPOD||neonGARDEN": 11 },
         sets: [
@@ -550,7 +552,7 @@ const Data = {
         ]
       },
       {
-        id: "dreamstate-2026", name: "Dreamstate SoCal", city: "San Bernardino, CA", dates: "Nov 21–22, 2026",
+        id: "dreamstate-2026", name: "Dreamstate SoCal", city: "San Bernardino, CA", dates: "Nov 21–22, 2026", start: "2026-11-21", genre: "Trance",
         stages: ["The Dream", "Above", "Beyond"], walkDefault: 8,
         transit: { "The Dream||Above": 7, "The Dream||Beyond": 10, "Above||Beyond": 6 },
         sets: [
@@ -564,7 +566,7 @@ const Data = {
         ]
       },
       {
-        id: "countdown-2026", name: "Countdown NYE", city: "San Bernardino, CA", dates: "Dec 31, 2026",
+        id: "countdown-2026", name: "Countdown NYE", city: "San Bernardino, CA", dates: "Dec 31, 2026", start: "2026-12-31", genre: "Mainstage · House · Bass",
         stages: ["kineticFIELD", "circuitGROUNDS", "bassPOD"], walkDefault: 9,
         transit: { "kineticFIELD||circuitGROUNDS": 8, "kineticFIELD||bassPOD": 12, "circuitGROUNDS||bassPOD": 9 },
         sets: [
@@ -577,7 +579,7 @@ const Data = {
         ]
       },
       {
-        id: "ultra-2027", name: "Ultra Music Festival", city: "Miami, FL", dates: "Mar 26–28, 2027",
+        id: "ultra-2027", name: "Ultra Music Festival", city: "Miami, FL", dates: "Mar 26–28, 2027", start: "2027-03-26", genre: "Mainstage · Techno · Trance",
         stages: ["Mainstage", "RESISTANCE Megastructure", "Worldwide", "A State of Trance"], walkDefault: 12,
         transit: { "Mainstage||RESISTANCE Megastructure": 14, "Mainstage||Worldwide": 9, "Mainstage||A State of Trance": 16, "RESISTANCE Megastructure||Worldwide": 12, "RESISTANCE Megastructure||A State of Trance": 10, "Worldwide||A State of Trance": 13 },
         sets: [
@@ -594,7 +596,7 @@ const Data = {
         ]
       },
       {
-        id: "dgtl-2027", name: "DGTL Amsterdam", city: "Amsterdam, NL", dates: "Apr 3–4, 2027",
+        id: "dgtl-2027", name: "DGTL Amsterdam", city: "Amsterdam, NL", dates: "Apr 3–4, 2027", start: "2027-04-03", genre: "Techno · House",
         stages: ["MODAR", "GAIA", "VAULT"], walkDefault: 8,
         transit: { "MODAR||GAIA": 7, "MODAR||VAULT": 10, "GAIA||VAULT": 6 },
         sets: [
@@ -608,7 +610,7 @@ const Data = {
         ]
       },
       {
-        id: "edc-lv-2027", name: "EDC Las Vegas", city: "Las Vegas, NV", dates: "May 15–17, 2027",
+        id: "edc-lv-2027", name: "EDC Las Vegas", city: "Las Vegas, NV", dates: "May 15–17, 2027", start: "2027-05-15", genre: "Mainstage · Techno · Bass",
         stages: ["kineticFIELD", "cosmicMEADOW", "circuitGROUNDS", "bassPOD", "neonGARDEN", "wasteLAND"], walkDefault: 12,
         transit: { "kineticFIELD||cosmicMEADOW": 10, "kineticFIELD||circuitGROUNDS": 9, "kineticFIELD||bassPOD": 16, "kineticFIELD||neonGARDEN": 14, "kineticFIELD||wasteLAND": 18, "cosmicMEADOW||circuitGROUNDS": 8, "cosmicMEADOW||bassPOD": 13, "circuitGROUNDS||neonGARDEN": 11, "bassPOD||wasteLAND": 9, "neonGARDEN||wasteLAND": 10 },
         sets: [
@@ -633,7 +635,7 @@ const Data = {
         ]
       },
       {
-        id: "movement-2027", name: "Movement Detroit", city: "Detroit, MI", dates: "May 22–24, 2027",
+        id: "movement-2027", name: "Movement Detroit", city: "Detroit, MI", dates: "May 22–24, 2027", start: "2027-05-22", genre: "Techno",
         stages: ["Movement", "Pyramid", "Underground", "Waterfront"], walkDefault: 9,
         transit: { "Movement||Pyramid": 8, "Movement||Underground": 11, "Movement||Waterfront": 7, "Pyramid||Underground": 9, "Pyramid||Waterfront": 10, "Underground||Waterfront": 12 },
         sets: [
@@ -648,7 +650,7 @@ const Data = {
         ]
       },
       {
-        id: "defqon-2027", name: "Defqon.1", city: "Biddinghuizen, NL", dates: "Jun 25–27, 2027",
+        id: "defqon-2027", name: "Defqon.1", city: "Biddinghuizen, NL", dates: "Jun 25–27, 2027", start: "2027-06-25", genre: "Hardstyle · Hardcore",
         stages: ["RED", "BLACK", "UV", "GOLD"], walkDefault: 11,
         transit: { "RED||BLACK": 10, "RED||UV": 13, "RED||GOLD": 9, "BLACK||UV": 11, "BLACK||GOLD": 12, "UV||GOLD": 8 },
         sets: [
@@ -662,7 +664,7 @@ const Data = {
         ]
       },
       {
-        id: "tomorrowland-2027", name: "Tomorrowland", city: "Boom, BE", dates: "Jul 23–25, 2027",
+        id: "tomorrowland-2027", name: "Tomorrowland", city: "Boom, BE", dates: "Jul 23–25, 2027", start: "2027-07-23", genre: "Mainstage · Techno · Melodic",
         stages: ["Mainstage", "Freedom", "Cave", "Core", "Atmosphere"], walkDefault: 13,
         transit: { "Mainstage||Freedom": 12, "Mainstage||Cave": 16, "Mainstage||Core": 18, "Mainstage||Atmosphere": 14, "Freedom||Cave": 10, "Freedom||Core": 13, "Cave||Core": 9, "Core||Atmosphere": 11, "Cave||Atmosphere": 12 },
         sets: [
@@ -684,7 +686,7 @@ const Data = {
         ]
       },
       {
-        id: "creamfields-2027", name: "Creamfields", city: "Daresbury, UK", dates: "Aug 26–29, 2027",
+        id: "creamfields-2027", name: "Creamfields", city: "Daresbury, UK", dates: "Aug 26–29, 2027", start: "2027-08-26", genre: "Mainstage · Techno · House",
         stages: ["North", "Steel Yard", "ARC", "Horizon"], walkDefault: 11,
         transit: { "North||Steel Yard": 10, "North||ARC": 13, "North||Horizon": 12, "Steel Yard||ARC": 9, "Steel Yard||Horizon": 11, "ARC||Horizon": 8 },
         sets: [
@@ -698,7 +700,7 @@ const Data = {
         ]
       },
       {
-        id: "electric-zoo-2027", name: "Electric Zoo", city: "New York, NY", dates: "Sep 3–5, 2027",
+        id: "electric-zoo-2027", name: "Electric Zoo", city: "New York, NY", dates: "Sep 3–5, 2027", start: "2027-09-03", genre: "Mainstage · House · Melodic",
         stages: ["Main Stage", "Riverside", "Sunday School"], walkDefault: 9,
         transit: { "Main Stage||Riverside": 8, "Main Stage||Sunday School": 11, "Riverside||Sunday School": 9 },
         sets: [
@@ -709,11 +711,515 @@ const Data = {
           { day: 1, stage: "Sunday School", start: "20:00", end: "21:30", artist: "Nora En Pure" },
           { day: 1, stage: "Sunday School", start: "21:30", end: "23:00", artist: "Lane 8" }
         ]
-      }
+      },
+      {
+        id: "ultra-japan-2026", name: "Ultra Japan", city: "Tokyo, JP", dates: "Sep 19–20, 2026", start: "2026-09-19", genre: "Mainstage · Techno · House",
+        stages: ["Ultra Main Stage", "RESISTANCE", "Ultra Park Stage"], walkDefault: 8,
+        transit: { "RESISTANCE||Ultra Main Stage": 9, "Ultra Main Stage||Ultra Park Stage": 7, "RESISTANCE||Ultra Park Stage": 8 },
+        sets: [
+          { day: 1, stage: "Ultra Main Stage", start: "15:00", end: "16:00", artist: "Nicky Romero" },
+          { day: 1, stage: "Ultra Main Stage", start: "16:15", end: "17:30", artist: "Alesso" },
+          { day: 1, stage: "Ultra Main Stage", start: "17:45", end: "19:00", artist: "Afrojack" },
+          { day: 1, stage: "Ultra Main Stage", start: "19:15", end: "20:45", artist: "Martin Garrix" },
+          { day: 1, stage: "RESISTANCE", start: "15:30", end: "17:00", artist: "Kölsch" },
+          { day: 1, stage: "RESISTANCE", start: "17:00", end: "18:30", artist: "Adam Beyer" },
+          { day: 1, stage: "RESISTANCE", start: "18:30", end: "20:30", artist: "Carl Cox" },
+          { day: 1, stage: "Ultra Park Stage", start: "16:00", end: "17:15", artist: "Honey Dijon" },
+          { day: 1, stage: "Ultra Park Stage", start: "17:30", end: "19:00", artist: "Peggy Gou" },
+          { day: 1, stage: "Ultra Park Stage", start: "19:00", end: "20:30", artist: "Fisher" }
+        ]
+      },
+      {
+        id: "nocturnal-2026", name: "Nocturnal Wonderland", city: "San Bernardino, CA", dates: "Sep 18–19, 2026", start: "2026-09-18", genre: "Bass · House · Techno",
+        stages: ["Labyrinth", "Sunken Garden", "Wolves' Den"], walkDefault: 9,
+        transit: { "Labyrinth||Sunken Garden": 8, "Labyrinth||Wolves' Den": 12, "Sunken Garden||Wolves' Den": 9 },
+        sets: [
+          { day: 1, stage: "Labyrinth", start: "20:00", end: "21:15", artist: "Slander" },
+          { day: 1, stage: "Labyrinth", start: "21:30", end: "22:45", artist: "Zeds Dead" },
+          { day: 1, stage: "Labyrinth", start: "23:00", end: "00:30", artist: "Excision" },
+          { day: 1, stage: "Sunken Garden", start: "20:30", end: "22:00", artist: "Chris Lake" },
+          { day: 1, stage: "Sunken Garden", start: "22:00", end: "23:30", artist: "Green Velvet" },
+          { day: 1, stage: "Sunken Garden", start: "23:30", end: "01:00", artist: "Gorgon City" },
+          { day: 1, stage: "Wolves' Den", start: "21:00", end: "22:30", artist: "Sara Landry" },
+          { day: 1, stage: "Wolves' Den", start: "22:30", end: "00:00", artist: "I Hate Models" }
+        ]
+      },
+      {
+        id: "portola-2026", name: "Portola Festival", city: "San Francisco, CA", dates: "Sep 26–27, 2026", start: "2026-09-26", genre: "Electronic · Live · Techno",
+        stages: ["Pier Stage", "Ship Stage", "Warehouse", "Crane Stage"], walkDefault: 8,
+        transit: { "Pier Stage||Ship Stage": 7, "Pier Stage||Warehouse": 10, "Crane Stage||Pier Stage": 9, "Ship Stage||Warehouse": 8, "Crane Stage||Ship Stage": 6, "Crane Stage||Warehouse": 9 },
+        sets: [
+          { day: 1, stage: "Pier Stage", start: "17:30", end: "18:30", artist: "Jungle" },
+          { day: 1, stage: "Pier Stage", start: "19:00", end: "20:15", artist: "Kaytranada" },
+          { day: 1, stage: "Pier Stage", start: "20:45", end: "22:00", artist: "Disclosure" },
+          { day: 1, stage: "Ship Stage", start: "18:00", end: "19:00", artist: "Overmono" },
+          { day: 1, stage: "Ship Stage", start: "19:30", end: "20:45", artist: "Four Tet" },
+          { day: 1, stage: "Ship Stage", start: "21:00", end: "22:30", artist: "Fred again.." },
+          { day: 1, stage: "Warehouse", start: "18:30", end: "20:00", artist: "Helena Hauff" },
+          { day: 1, stage: "Warehouse", start: "20:00", end: "21:30", artist: "Ben Klock" },
+          { day: 1, stage: "Crane Stage", start: "19:00", end: "20:30", artist: "Peggy Gou" },
+          { day: 1, stage: "Crane Stage", start: "20:30", end: "22:00", artist: "Jamie xx" }
+        ]
+      },
+      {
+        id: "escape-2026", name: "Escape Halloween", city: "San Bernardino, CA", dates: "Oct 30–31, 2026", start: "2026-10-30", genre: "Bass · House · Techno",
+        stages: ["Ghouls' Graveyard", "Slaughterhouse", "Cannibals' Tea Party", "Feeding Grounds"], walkDefault: 10,
+        transit: { "Ghouls' Graveyard||Slaughterhouse": 8, "Cannibals' Tea Party||Ghouls' Graveyard": 11, "Feeding Grounds||Ghouls' Graveyard": 13, "Cannibals' Tea Party||Slaughterhouse": 9, "Feeding Grounds||Slaughterhouse": 10, "Cannibals' Tea Party||Feeding Grounds": 8 },
+        sets: [
+          { day: 1, stage: "Ghouls' Graveyard", start: "20:00", end: "21:15", artist: "Alison Wonderland" },
+          { day: 1, stage: "Ghouls' Graveyard", start: "21:30", end: "22:45", artist: "Illenium" },
+          { day: 1, stage: "Ghouls' Graveyard", start: "23:00", end: "00:30", artist: "Marshmello" },
+          { day: 1, stage: "Slaughterhouse", start: "20:30", end: "22:00", artist: "Kai Wachi" },
+          { day: 1, stage: "Slaughterhouse", start: "22:00", end: "23:30", artist: "Svdden Death" },
+          { day: 1, stage: "Slaughterhouse", start: "23:30", end: "01:00", artist: "Subtronics" },
+          { day: 1, stage: "Cannibals' Tea Party", start: "21:00", end: "22:30", artist: "Michael Bibi" },
+          { day: 1, stage: "Cannibals' Tea Party", start: "22:30", end: "00:00", artist: "Fisher" },
+          { day: 1, stage: "Feeding Grounds", start: "21:30", end: "23:00", artist: "Indira Paganotto" },
+          { day: 1, stage: "Feeding Grounds", start: "23:00", end: "00:30", artist: "Amelie Lens" }
+        ]
+      },
+      {
+        id: "wonderfruit-2026", name: "Wonderfruit", city: "Pattaya, TH", dates: "Dec 10–14, 2026", start: "2026-12-10", genre: "House · Techno · Live",
+        stages: ["The Quarry", "Polygon", "Solar Stage", "Ziggurat"], walkDefault: 10,
+        transit: { "Polygon||The Quarry": 12, "Solar Stage||The Quarry": 9, "The Quarry||Ziggurat": 11, "Polygon||Solar Stage": 10, "Polygon||Ziggurat": 8, "Solar Stage||Ziggurat": 9 },
+        sets: [
+          { day: 1, stage: "The Quarry", start: "20:00", end: "21:30", artist: "Sasha" },
+          { day: 1, stage: "The Quarry", start: "21:30", end: "23:00", artist: "Âme" },
+          { day: 1, stage: "The Quarry", start: "23:00", end: "01:00", artist: "Dixon" },
+          { day: 1, stage: "Polygon", start: "20:30", end: "22:00", artist: "Yotto" },
+          { day: 1, stage: "Polygon", start: "22:00", end: "23:30", artist: "Lane 8" },
+          { day: 1, stage: "Solar Stage", start: "21:00", end: "22:30", artist: "Bonobo" },
+          { day: 1, stage: "Solar Stage", start: "22:30", end: "00:00", artist: "Jon Hopkins" },
+          { day: 1, stage: "Ziggurat", start: "22:00", end: "00:00", artist: "Seth Troxler" }
+        ]
+      },
+      {
+        id: "dwp-2026", name: "Djakarta Warehouse Project", city: "Jakarta, ID", dates: "Dec 12–13, 2026", start: "2026-12-12", genre: "Mainstage · Techno · Bass",
+        stages: ["Garudha Land", "Cosmic Station", "Neon Jungle"], walkDefault: 9,
+        transit: { "Cosmic Station||Garudha Land": 10, "Garudha Land||Neon Jungle": 8, "Cosmic Station||Neon Jungle": 9 },
+        sets: [
+          { day: 1, stage: "Garudha Land", start: "19:00", end: "20:00", artist: "Vintage Culture" },
+          { day: 1, stage: "Garudha Land", start: "20:15", end: "21:30", artist: "Alan Walker" },
+          { day: 1, stage: "Garudha Land", start: "21:45", end: "23:00", artist: "Tiësto" },
+          { day: 1, stage: "Garudha Land", start: "23:15", end: "00:45", artist: "Martin Garrix" },
+          { day: 1, stage: "Cosmic Station", start: "19:30", end: "21:00", artist: "Boris Brejcha" },
+          { day: 1, stage: "Cosmic Station", start: "21:00", end: "22:30", artist: "Anyma" },
+          { day: 1, stage: "Cosmic Station", start: "22:30", end: "00:00", artist: "Charlotte de Witte" },
+          { day: 1, stage: "Neon Jungle", start: "20:00", end: "21:15", artist: "Peekaboo" },
+          { day: 1, stage: "Neon Jungle", start: "21:30", end: "22:45", artist: "Zeds Dead" },
+          { day: 1, stage: "Neon Jungle", start: "23:00", end: "00:15", artist: "Excision" }
+        ]
+      },
+      {
+        id: "asot-2027", name: "A State of Trance Festival", city: "Utrecht, NL", dates: "Feb 20, 2027", start: "2027-02-20", genre: "Trance",
+        stages: ["Mainstage", "Who's Afraid Of 138?!", "Progressive"], walkDefault: 6,
+        transit: { "Mainstage||Who's Afraid Of 138?!": 6, "Mainstage||Progressive": 7, "Progressive||Who's Afraid Of 138?!": 5 },
+        sets: [
+          { day: 1, stage: "Mainstage", start: "20:00", end: "21:00", artist: "Andrew Rayel" },
+          { day: 1, stage: "Mainstage", start: "21:00", end: "22:30", artist: "Armin van Buuren" },
+          { day: 1, stage: "Mainstage", start: "22:30", end: "23:45", artist: "Ferry Corsten" },
+          { day: 1, stage: "Mainstage", start: "23:45", end: "01:00", artist: "Vini Vici" },
+          { day: 1, stage: "Who's Afraid Of 138?!", start: "20:30", end: "22:00", artist: "Aly & Fila" },
+          { day: 1, stage: "Who's Afraid Of 138?!", start: "22:00", end: "23:30", artist: "Giuseppe Ottaviani" },
+          { day: 1, stage: "Who's Afraid Of 138?!", start: "23:30", end: "01:00", artist: "MaRLo" },
+          { day: 1, stage: "Progressive", start: "21:00", end: "22:30", artist: "Andrew Bayer" },
+          { day: 1, stage: "Progressive", start: "22:30", end: "00:00", artist: "Ilan Bluestone" }
+        ]
+      },
+      {
+        id: "edc-mexico-2027", name: "EDC Mexico", city: "Mexico City, MX", dates: "Feb 26–28, 2027", start: "2027-02-26", genre: "Mainstage · Techno · Bass",
+        stages: ["kineticFIELD", "circuitGROUNDS", "wasteLAND", "neonGARDEN"], walkDefault: 10,
+        transit: { "circuitGROUNDS||kineticFIELD": 8, "kineticFIELD||wasteLAND": 14, "kineticFIELD||neonGARDEN": 11, "circuitGROUNDS||wasteLAND": 10, "circuitGROUNDS||neonGARDEN": 9, "neonGARDEN||wasteLAND": 12 },
+        sets: [
+          { day: 1, stage: "kineticFIELD", start: "20:00", end: "21:15", artist: "Afrojack" },
+          { day: 1, stage: "kineticFIELD", start: "21:30", end: "22:45", artist: "Alesso" },
+          { day: 1, stage: "kineticFIELD", start: "23:00", end: "00:30", artist: "David Guetta" },
+          { day: 1, stage: "circuitGROUNDS", start: "20:30", end: "22:00", artist: "Eric Prydz" },
+          { day: 1, stage: "circuitGROUNDS", start: "22:00", end: "23:30", artist: "Kaskade" },
+          { day: 1, stage: "wasteLAND", start: "21:00", end: "22:15", artist: "Wooli" },
+          { day: 1, stage: "wasteLAND", start: "22:30", end: "23:45", artist: "Subtronics" },
+          { day: 1, stage: "neonGARDEN", start: "21:30", end: "23:00", artist: "Marco Carola" },
+          { day: 1, stage: "neonGARDEN", start: "23:00", end: "00:30", artist: "Amelie Lens" }
+        ]
+      },
+      {
+        id: "crssd-2027", name: "CRSSD Festival", city: "San Diego, CA", dates: "Mar 6–7, 2027", start: "2027-03-06", genre: "House · Techno",
+        stages: ["Ocean View", "The Palms", "City Steps"], walkDefault: 8,
+        transit: { "Ocean View||The Palms": 7, "City Steps||Ocean View": 10, "City Steps||The Palms": 8 },
+        sets: [
+          { day: 1, stage: "Ocean View", start: "17:00", end: "18:00", artist: "Eli & Fur" },
+          { day: 1, stage: "Ocean View", start: "18:15", end: "19:30", artist: "Bicep" },
+          { day: 1, stage: "Ocean View", start: "19:45", end: "21:30", artist: "RÜFÜS DU SOL" },
+          { day: 1, stage: "The Palms", start: "17:30", end: "19:00", artist: "Chris Stussy" },
+          { day: 1, stage: "The Palms", start: "19:00", end: "20:30", artist: "Michael Bibi" },
+          { day: 1, stage: "The Palms", start: "20:30", end: "22:00", artist: "Jamie Jones" },
+          { day: 1, stage: "City Steps", start: "18:00", end: "19:30", artist: "Kobosil" },
+          { day: 1, stage: "City Steps", start: "19:30", end: "21:00", artist: "Reinier Zonneveld" },
+          { day: 1, stage: "City Steps", start: "21:00", end: "22:30", artist: "Adam Beyer" }
+        ]
+      },
+      {
+        id: "beyond-2027", name: "Beyond Wonderland SoCal", city: "San Bernardino, CA", dates: "Mar 19–20, 2027", start: "2027-03-19", genre: "Bass · House · Melodic",
+        stages: ["Queen's Domain", "Upside Down", "Caterpillar's Garden", "Cheshire Woods"], walkDefault: 10,
+        transit: { "Queen's Domain||Upside Down": 9, "Caterpillar's Garden||Queen's Domain": 12, "Cheshire Woods||Queen's Domain": 11, "Caterpillar's Garden||Upside Down": 8, "Cheshire Woods||Upside Down": 10, "Caterpillar's Garden||Cheshire Woods": 7 },
+        sets: [
+          { day: 1, stage: "Queen's Domain", start: "20:00", end: "21:15", artist: "Gryffin" },
+          { day: 1, stage: "Queen's Domain", start: "21:30", end: "22:45", artist: "Illenium" },
+          { day: 1, stage: "Queen's Domain", start: "23:00", end: "00:30", artist: "Zedd" },
+          { day: 1, stage: "Upside Down", start: "20:30", end: "22:00", artist: "Level Up" },
+          { day: 1, stage: "Upside Down", start: "22:00", end: "23:30", artist: "Sullivan King" },
+          { day: 1, stage: "Upside Down", start: "23:30", end: "01:00", artist: "Svdden Death" },
+          { day: 1, stage: "Caterpillar's Garden", start: "21:00", end: "22:30", artist: "Claptone" },
+          { day: 1, stage: "Caterpillar's Garden", start: "22:30", end: "00:00", artist: "Chris Lake" },
+          { day: 1, stage: "Cheshire Woods", start: "21:30", end: "23:00", artist: "Nora En Pure" },
+          { day: 1, stage: "Cheshire Woods", start: "23:00", end: "00:30", artist: "Lane 8" }
+        ]
+      },
+      {
+        id: "tml-winter-2027", name: "Tomorrowland Winter", city: "Alpe d'Huez, FR", dates: "Mar 20–27, 2027", start: "2027-03-20", genre: "Mainstage · Techno · Melodic",
+        stages: ["Mainstage", "The Cage", "Frozen Lotus", "Crystal Garden"], walkDefault: 12,
+        transit: { "Mainstage||The Cage": 10, "Frozen Lotus||Mainstage": 15, "Crystal Garden||Mainstage": 12, "Frozen Lotus||The Cage": 11, "Crystal Garden||The Cage": 9, "Crystal Garden||Frozen Lotus": 13 },
+        sets: [
+          { day: 1, stage: "Mainstage", start: "16:00", end: "17:00", artist: "Lost Frequencies" },
+          { day: 1, stage: "Mainstage", start: "17:15", end: "18:30", artist: "Steve Aoki" },
+          { day: 1, stage: "Mainstage", start: "18:45", end: "20:00", artist: "Dimitri Vegas & Like Mike" },
+          { day: 1, stage: "The Cage", start: "16:30", end: "18:00", artist: "Kölsch" },
+          { day: 1, stage: "The Cage", start: "18:00", end: "19:30", artist: "Joris Voorn" },
+          { day: 1, stage: "Frozen Lotus", start: "17:00", end: "18:30", artist: "Nora En Pure" },
+          { day: 1, stage: "Frozen Lotus", start: "18:30", end: "20:00", artist: "Ben Böhmer" },
+          { day: 1, stage: "Crystal Garden", start: "17:30", end: "19:00", artist: "Sub Zero Project" }
+        ]
+      },
+      {
+        id: "snowbombing-2027", name: "Snowbombing", city: "Mayrhofen, AT", dates: "Apr 5–10, 2027", start: "2027-04-05", genre: "House · Drum & Bass · Disco",
+        stages: ["Forest Stage", "Racket Club", "Arctic Disco"], walkDefault: 12,
+        transit: { "Forest Stage||Racket Club": 14, "Arctic Disco||Forest Stage": 18, "Arctic Disco||Racket Club": 10 },
+        sets: [
+          { day: 1, stage: "Forest Stage", start: "20:00", end: "21:30", artist: "Patrick Topping" },
+          { day: 1, stage: "Forest Stage", start: "21:30", end: "23:00", artist: "Fatboy Slim" },
+          { day: 1, stage: "Racket Club", start: "21:00", end: "22:30", artist: "Hybrid Minds" },
+          { day: 1, stage: "Racket Club", start: "22:30", end: "00:00", artist: "Andy C" },
+          { day: 1, stage: "Arctic Disco", start: "20:30", end: "22:00", artist: "Horse Meat Disco" },
+          { day: 1, stage: "Arctic Disco", start: "22:00", end: "23:30", artist: "Purple Disco Machine" }
+        ]
+      },
+      {
+        id: "coachella-2027", name: "Coachella (electronic tents)", city: "Indio, CA", dates: "Apr 9–11, 2027", start: "2027-04-09", genre: "Electronic · Techno · Live",
+        stages: ["Sahara", "Yuma", "Quasar", "Do LaB"], walkDefault: 12,
+        transit: { "Sahara||Yuma": 10, "Quasar||Sahara": 14, "Do LaB||Sahara": 9, "Quasar||Yuma": 8, "Do LaB||Yuma": 12, "Do LaB||Quasar": 15 },
+        sets: [
+          { day: 1, stage: "Sahara", start: "19:30", end: "20:30", artist: "Dom Dolla" },
+          { day: 1, stage: "Sahara", start: "21:00", end: "22:15", artist: "Flume" },
+          { day: 1, stage: "Sahara", start: "22:45", end: "00:00", artist: "Skrillex" },
+          { day: 1, stage: "Yuma", start: "19:00", end: "20:30", artist: "Bicep" },
+          { day: 1, stage: "Yuma", start: "20:30", end: "22:00", artist: "Charlotte de Witte" },
+          { day: 1, stage: "Yuma", start: "22:00", end: "23:30", artist: "Carl Cox" },
+          { day: 1, stage: "Quasar", start: "20:00", end: "22:00", artist: "Eric Prydz" },
+          { day: 1, stage: "Quasar", start: "22:00", end: "00:00", artist: "Anyma" },
+          { day: 1, stage: "Do LaB", start: "19:30", end: "21:00", artist: "CloZee" },
+          { day: 1, stage: "Do LaB", start: "21:00", end: "22:30", artist: "Tipper" }
+        ]
+      },
+      {
+        id: "time-warp-2027", name: "Time Warp", city: "Mannheim, DE", dates: "Apr 10, 2027", start: "2027-04-10", genre: "Techno",
+        stages: ["Floor 1", "Floor 2", "Floor 3", "Floor 4"], walkDefault: 6,
+        transit: { "Floor 1||Floor 2": 5, "Floor 1||Floor 3": 8, "Floor 1||Floor 4": 10, "Floor 2||Floor 3": 5, "Floor 2||Floor 4": 8, "Floor 3||Floor 4": 5 },
+        sets: [
+          { day: 1, stage: "Floor 1", start: "22:00", end: "23:30", artist: "Dixon" },
+          { day: 1, stage: "Floor 1", start: "23:30", end: "01:00", artist: "Solomun" },
+          { day: 1, stage: "Floor 1", start: "01:00", end: "03:00", artist: "Sven Väth" },
+          { day: 1, stage: "Floor 2", start: "22:30", end: "00:00", artist: "Amelie Lens" },
+          { day: 1, stage: "Floor 2", start: "00:00", end: "02:00", artist: "Adam Beyer" },
+          { day: 1, stage: "Floor 2", start: "02:00", end: "04:00", artist: "Charlotte de Witte" },
+          { day: 1, stage: "Floor 3", start: "23:00", end: "00:30", artist: "Marcel Dettmann" },
+          { day: 1, stage: "Floor 3", start: "00:30", end: "02:30", artist: "Ben Klock" },
+          { day: 1, stage: "Floor 4", start: "23:30", end: "01:00", artist: "Kobosil" },
+          { day: 1, stage: "Floor 4", start: "01:00", end: "03:00", artist: "999999999" }
+        ]
+      },
+      {
+        id: "sonar-2027", name: "Sónar", city: "Barcelona, ES", dates: "Jun 17–19, 2027", start: "2027-06-17", genre: "Electronic · Techno · Experimental",
+        stages: ["SonarClub", "SonarPub", "SonarLab", "SonarPark"], walkDefault: 8,
+        transit: { "SonarClub||SonarPub": 7, "SonarClub||SonarLab": 10, "SonarClub||SonarPark": 9, "SonarLab||SonarPub": 6, "SonarPark||SonarPub": 8, "SonarLab||SonarPark": 7 },
+        sets: [
+          { day: 1, stage: "SonarClub", start: "22:00", end: "23:30", artist: "Jamie xx" },
+          { day: 1, stage: "SonarClub", start: "23:30", end: "01:00", artist: "Four Tet" },
+          { day: 1, stage: "SonarClub", start: "01:00", end: "03:00", artist: "Peggy Gou" },
+          { day: 1, stage: "SonarPub", start: "22:30", end: "00:00", artist: "Charlotte de Witte" },
+          { day: 1, stage: "SonarPub", start: "00:00", end: "02:00", artist: "Amelie Lens" },
+          { day: 1, stage: "SonarLab", start: "23:00", end: "00:30", artist: "Helena Hauff" },
+          { day: 1, stage: "SonarLab", start: "00:30", end: "02:30", artist: "Nina Kraviz" },
+          { day: 1, stage: "SonarPark", start: "23:30", end: "01:00", artist: "Overmono" },
+          { day: 1, stage: "SonarPark", start: "01:00", end: "03:00", artist: "Floating Points" }
+        ]
+      },
+      {
+        id: "electric-forest-2027", name: "Electric Forest", city: "Rothbury, MI", dates: "Jun 24–27, 2027", start: "2027-06-24", genre: "Bass · Live · House",
+        stages: ["Ranch Arena", "Sherwood Court", "Tripolee", "The Observatory"], walkDefault: 12,
+        transit: { "Ranch Arena||Sherwood Court": 12, "Ranch Arena||Tripolee": 9, "Ranch Arena||The Observatory": 15, "Sherwood Court||Tripolee": 8, "Sherwood Court||The Observatory": 10, "The Observatory||Tripolee": 11 },
+        sets: [
+          { day: 1, stage: "Ranch Arena", start: "20:00", end: "21:15", artist: "GRiZ" },
+          { day: 1, stage: "Ranch Arena", start: "21:45", end: "23:00", artist: "ODESZA" },
+          { day: 1, stage: "Ranch Arena", start: "23:30", end: "01:00", artist: "Excision" },
+          { day: 1, stage: "Sherwood Court", start: "20:30", end: "22:00", artist: "Subtronics" },
+          { day: 1, stage: "Sherwood Court", start: "22:00", end: "23:30", artist: "Liquid Stranger" },
+          { day: 1, stage: "Sherwood Court", start: "23:30", end: "01:00", artist: "Zeds Dead" },
+          { day: 1, stage: "Tripolee", start: "21:00", end: "22:30", artist: "John Summit" },
+          { day: 1, stage: "Tripolee", start: "22:30", end: "00:00", artist: "Chris Lake" },
+          { day: 1, stage: "The Observatory", start: "21:30", end: "23:00", artist: "Tipper" },
+          { day: 1, stage: "The Observatory", start: "23:00", end: "00:30", artist: "Of The Trees" }
+        ]
+      },
+      {
+        id: "awakenings-2027", name: "Awakenings Summer Festival", city: "Hilvarenbeek, NL", dates: "Jul 2–4, 2027", start: "2027-07-02", genre: "Techno",
+        stages: ["Area V", "Area W", "Area X", "Area Y"], walkDefault: 10,
+        transit: { "Area V||Area W": 9, "Area V||Area X": 12, "Area V||Area Y": 15, "Area W||Area X": 8, "Area W||Area Y": 11, "Area X||Area Y": 9 },
+        sets: [
+          { day: 1, stage: "Area V", start: "14:00", end: "15:30", artist: "Enrico Sangiuliano" },
+          { day: 1, stage: "Area V", start: "15:30", end: "17:00", artist: "Reinier Zonneveld" },
+          { day: 1, stage: "Area V", start: "17:00", end: "19:00", artist: "Amelie Lens" },
+          { day: 1, stage: "Area V", start: "19:00", end: "21:00", artist: "Adam Beyer" },
+          { day: 1, stage: "Area V", start: "21:00", end: "23:00", artist: "Charlotte de Witte" },
+          { day: 1, stage: "Area W", start: "14:30", end: "16:00", artist: "Joris Voorn" },
+          { day: 1, stage: "Area W", start: "16:00", end: "17:30", artist: "Kölsch" },
+          { day: 1, stage: "Area W", start: "17:30", end: "19:30", artist: "Maceo Plex" },
+          { day: 1, stage: "Area W", start: "19:30", end: "21:30", artist: "Tale of Us" },
+          { day: 1, stage: "Area X", start: "15:00", end: "16:30", artist: "Indira Paganotto" },
+          { day: 1, stage: "Area X", start: "16:30", end: "18:00", artist: "Klangkuenstler" },
+          { day: 1, stage: "Area X", start: "18:00", end: "20:00", artist: "I Hate Models" },
+          { day: 1, stage: "Area X", start: "20:00", end: "22:00", artist: "999999999" },
+          { day: 1, stage: "Area Y", start: "16:00", end: "17:30", artist: "Dax J" },
+          { day: 1, stage: "Area Y", start: "17:30", end: "19:30", artist: "Ben Klock" },
+          { day: 1, stage: "Area Y", start: "19:30", end: "21:30", artist: "Marcel Dettmann" }
+        ]
+      },
+      {
+        id: "kappa-2027", name: "Kappa FuturFestival", city: "Turin, IT", dates: "Jul 3–4, 2027", start: "2027-07-03", genre: "Techno · House",
+        stages: ["Jäger Stage", "Kappa Stage", "Futur Stage"], walkDefault: 8,
+        transit: { "Jäger Stage||Kappa Stage": 7, "Futur Stage||Jäger Stage": 10, "Futur Stage||Kappa Stage": 8 },
+        sets: [
+          { day: 1, stage: "Jäger Stage", start: "16:00", end: "17:30", artist: "The Martinez Brothers" },
+          { day: 1, stage: "Jäger Stage", start: "17:30", end: "19:00", artist: "Jamie Jones" },
+          { day: 1, stage: "Jäger Stage", start: "19:00", end: "21:00", artist: "Marco Carola" },
+          { day: 1, stage: "Jäger Stage", start: "21:00", end: "23:00", artist: "Carl Cox" },
+          { day: 1, stage: "Kappa Stage", start: "16:30", end: "18:00", artist: "Kölsch" },
+          { day: 1, stage: "Kappa Stage", start: "18:00", end: "19:30", artist: "Joris Voorn" },
+          { day: 1, stage: "Kappa Stage", start: "19:30", end: "21:30", artist: "Adam Beyer" },
+          { day: 1, stage: "Kappa Stage", start: "21:30", end: "23:30", artist: "Charlotte de Witte" },
+          { day: 1, stage: "Futur Stage", start: "17:00", end: "18:30", artist: "Chris Stussy" },
+          { day: 1, stage: "Futur Stage", start: "18:30", end: "20:00", artist: "Seth Troxler" },
+          { day: 1, stage: "Futur Stage", start: "20:00", end: "22:00", artist: "Black Coffee" }
+        ]
+      },
+      {
+        id: "exit-2027", name: "EXIT Festival", city: "Novi Sad, RS", dates: "Jul 8–11, 2027", start: "2027-07-08", genre: "Techno · Mainstage · Mixed",
+        stages: ["mts Dance Arena", "Main Stage", "No Sleep Novi Sad"], walkDefault: 10,
+        transit: { "Main Stage||mts Dance Arena": 12, "No Sleep Novi Sad||mts Dance Arena": 8, "Main Stage||No Sleep Novi Sad": 11 },
+        sets: [
+          { day: 1, stage: "mts Dance Arena", start: "23:00", end: "00:30", artist: "Indira Paganotto" },
+          { day: 1, stage: "mts Dance Arena", start: "00:30", end: "02:00", artist: "Amelie Lens" },
+          { day: 1, stage: "mts Dance Arena", start: "02:00", end: "04:00", artist: "Carl Cox" },
+          { day: 1, stage: "Main Stage", start: "22:00", end: "23:15", artist: "Kaskade" },
+          { day: 1, stage: "Main Stage", start: "23:30", end: "01:00", artist: "Skrillex" },
+          { day: 1, stage: "No Sleep Novi Sad", start: "23:30", end: "01:00", artist: "Trym" },
+          { day: 1, stage: "No Sleep Novi Sad", start: "01:00", end: "03:00", artist: "Sara Landry" }
+        ]
+      },
+      {
+        id: "ultra-europe-2027", name: "Ultra Europe", city: "Split, HR", dates: "Jul 9–11, 2027", start: "2027-07-09", genre: "Mainstage · Techno · House",
+        stages: ["Mainstage", "RESISTANCE", "Ultra Worldwide"], walkDefault: 9,
+        transit: { "Mainstage||RESISTANCE": 10, "Mainstage||Ultra Worldwide": 8, "RESISTANCE||Ultra Worldwide": 9 },
+        sets: [
+          { day: 1, stage: "Mainstage", start: "20:30", end: "21:30", artist: "W&W" },
+          { day: 1, stage: "Mainstage", start: "21:45", end: "23:00", artist: "Alesso" },
+          { day: 1, stage: "Mainstage", start: "23:15", end: "00:45", artist: "Armin van Buuren" },
+          { day: 1, stage: "Mainstage", start: "01:00", end: "02:30", artist: "Hardwell" },
+          { day: 1, stage: "RESISTANCE", start: "21:00", end: "22:30", artist: "Kölsch" },
+          { day: 1, stage: "RESISTANCE", start: "22:30", end: "00:00", artist: "Adam Beyer" },
+          { day: 1, stage: "RESISTANCE", start: "00:00", end: "02:00", artist: "Carl Cox" },
+          { day: 1, stage: "Ultra Worldwide", start: "21:30", end: "23:00", artist: "Dom Dolla" },
+          { day: 1, stage: "Ultra Worldwide", start: "23:00", end: "00:30", artist: "Fisher" }
+        ]
+      },
+      {
+        id: "parookaville-2027", name: "Parookaville", city: "Weeze, DE", dates: "Jul 16–18, 2027", start: "2027-07-16", genre: "Mainstage · Hardstyle · Techno",
+        stages: ["Mainstage", "Bill's Factory", "Warehouse", "Cloud Factory"], walkDefault: 10,
+        transit: { "Bill's Factory||Mainstage": 9, "Mainstage||Warehouse": 12, "Cloud Factory||Mainstage": 8, "Bill's Factory||Warehouse": 10, "Bill's Factory||Cloud Factory": 11, "Cloud Factory||Warehouse": 9 },
+        sets: [
+          { day: 1, stage: "Mainstage", start: "20:00", end: "21:00", artist: "Timmy Trumpet" },
+          { day: 1, stage: "Mainstage", start: "21:15", end: "22:30", artist: "Steve Aoki" },
+          { day: 1, stage: "Mainstage", start: "22:45", end: "00:00", artist: "Hardwell" },
+          { day: 1, stage: "Mainstage", start: "00:15", end: "01:30", artist: "Martin Garrix" },
+          { day: 1, stage: "Bill's Factory", start: "20:30", end: "22:00", artist: "Brennan Heart" },
+          { day: 1, stage: "Bill's Factory", start: "22:00", end: "23:30", artist: "Sub Zero Project" },
+          { day: 1, stage: "Bill's Factory", start: "23:30", end: "01:00", artist: "Headhunterz" },
+          { day: 1, stage: "Warehouse", start: "21:00", end: "22:30", artist: "Reinier Zonneveld" },
+          { day: 1, stage: "Warehouse", start: "22:30", end: "00:00", artist: "Amelie Lens" },
+          { day: 1, stage: "Cloud Factory", start: "21:30", end: "23:00", artist: "Oliver Heldens" },
+          { day: 1, stage: "Cloud Factory", start: "23:00", end: "00:30", artist: "MEDUZA" }
+        ]
+      },
+      {
+        id: "let-it-roll-2027", name: "Let It Roll", city: "Milovice, CZ", dates: "Aug 5–7, 2027", start: "2027-08-05", genre: "Drum & Bass",
+        stages: ["Main Stage", "Factory", "Beats", "Sunset Hill"], walkDefault: 10,
+        transit: { "Factory||Main Stage": 9, "Beats||Main Stage": 12, "Main Stage||Sunset Hill": 14, "Beats||Factory": 8, "Factory||Sunset Hill": 11, "Beats||Sunset Hill": 9 },
+        sets: [
+          { day: 1, stage: "Main Stage", start: "22:00", end: "23:00", artist: "Wilkinson" },
+          { day: 1, stage: "Main Stage", start: "23:00", end: "00:30", artist: "Sub Focus" },
+          { day: 1, stage: "Main Stage", start: "00:30", end: "02:00", artist: "Andy C" },
+          { day: 1, stage: "Main Stage", start: "02:00", end: "03:30", artist: "Chase & Status" },
+          { day: 1, stage: "Factory", start: "22:30", end: "00:00", artist: "A.M.C" },
+          { day: 1, stage: "Factory", start: "00:00", end: "01:30", artist: "Bou" },
+          { day: 1, stage: "Factory", start: "01:30", end: "03:00", artist: "Hedex" },
+          { day: 1, stage: "Beats", start: "23:00", end: "00:30", artist: "Camo & Krooked" },
+          { day: 1, stage: "Beats", start: "00:30", end: "02:00", artist: "Dimension" },
+          { day: 1, stage: "Sunset Hill", start: "23:30", end: "01:00", artist: "Hybrid Minds" },
+          { day: 1, stage: "Sunset Hill", start: "01:00", end: "02:30", artist: "Koven" }
+        ]
+      },
+      {
+        id: "untold-2027", name: "UNTOLD", city: "Cluj-Napoca, RO", dates: "Aug 5–8, 2027", start: "2027-08-05", genre: "Mainstage · Techno · Drum & Bass",
+        stages: ["Main Stage", "Galaxy Stage", "Alchemy Stage", "Fortune Stage"], walkDefault: 12,
+        transit: { "Galaxy Stage||Main Stage": 12, "Alchemy Stage||Main Stage": 10, "Fortune Stage||Main Stage": 14, "Alchemy Stage||Galaxy Stage": 9, "Fortune Stage||Galaxy Stage": 11, "Alchemy Stage||Fortune Stage": 8 },
+        sets: [
+          { day: 1, stage: "Main Stage", start: "22:00", end: "23:15", artist: "Alan Walker" },
+          { day: 1, stage: "Main Stage", start: "23:30", end: "00:45", artist: "Armin van Buuren" },
+          { day: 1, stage: "Main Stage", start: "01:00", end: "02:30", artist: "Martin Garrix" },
+          { day: 1, stage: "Galaxy Stage", start: "22:30", end: "00:00", artist: "Boris Brejcha" },
+          { day: 1, stage: "Galaxy Stage", start: "00:00", end: "01:30", artist: "Anyma" },
+          { day: 1, stage: "Galaxy Stage", start: "01:30", end: "03:00", artist: "Charlotte de Witte" },
+          { day: 1, stage: "Alchemy Stage", start: "23:00", end: "00:30", artist: "Solomun" },
+          { day: 1, stage: "Alchemy Stage", start: "00:30", end: "02:00", artist: "Black Coffee" },
+          { day: 1, stage: "Fortune Stage", start: "23:30", end: "01:00", artist: "Sub Focus" },
+          { day: 1, stage: "Fortune Stage", start: "01:00", end: "02:30", artist: "Andy C" }
+        ]
+      },
+      {
+        id: "dekmantel-2027", name: "Dekmantel Festival", city: "Amsterdam, NL", dates: "Aug 5–8, 2027", start: "2027-08-06", genre: "Techno · House · Left-field",
+        stages: ["Main Stage", "UFO I", "UFO II", "The Loop", "Greenhouse"], walkDefault: 7,
+        transit: { "Main Stage||UFO I": 6, "Main Stage||UFO II": 8, "Main Stage||The Loop": 9, "Greenhouse||Main Stage": 7, "UFO I||UFO II": 3, "The Loop||UFO I": 8, "The Loop||UFO II": 7, "Greenhouse||The Loop": 6, "Greenhouse||UFO I": 9 },
+        sets: [
+          { day: 1, stage: "Main Stage", start: "15:00", end: "16:30", artist: "Palms Trax" },
+          { day: 1, stage: "Main Stage", start: "16:30", end: "18:00", artist: "Helena Hauff" },
+          { day: 1, stage: "Main Stage", start: "18:00", end: "20:00", artist: "Jeff Mills" },
+          { day: 1, stage: "Main Stage", start: "20:00", end: "22:00", artist: "Ben UFO" },
+          { day: 1, stage: "UFO I", start: "15:30", end: "17:00", artist: "DVS1" },
+          { day: 1, stage: "UFO I", start: "17:00", end: "19:00", artist: "Marcel Dettmann" },
+          { day: 1, stage: "UFO I", start: "19:00", end: "21:00", artist: "Ben Klock" },
+          { day: 1, stage: "UFO II", start: "16:00", end: "17:30", artist: "Objekt" },
+          { day: 1, stage: "UFO II", start: "17:30", end: "19:30", artist: "Blawan" },
+          { day: 1, stage: "UFO II", start: "19:30", end: "21:30", artist: "Surgeon" },
+          { day: 1, stage: "The Loop", start: "16:30", end: "18:00", artist: "Hunee" },
+          { day: 1, stage: "The Loop", start: "18:00", end: "20:00", artist: "Antal" },
+          { day: 1, stage: "Greenhouse", start: "17:00", end: "18:30", artist: "Floating Points" },
+          { day: 1, stage: "Greenhouse", start: "18:30", end: "20:30", artist: "Four Tet" }
+        ]
+      },
+      {
+        id: "hard-summer-2027", name: "HARD Summer", city: "Los Angeles, CA", dates: "Aug 7–8, 2027", start: "2027-08-07", genre: "Bass · House · Techno",
+        stages: ["HARD Stage", "HARDER Stage", "Green Stage", "Pink Stage"], walkDefault: 10,
+        transit: { "HARD Stage||HARDER Stage": 12, "Green Stage||HARD Stage": 9, "HARD Stage||Pink Stage": 11, "Green Stage||HARDER Stage": 8, "HARDER Stage||Pink Stage": 10, "Green Stage||Pink Stage": 7 },
+        sets: [
+          { day: 1, stage: "HARD Stage", start: "19:30", end: "20:30", artist: "Diplo" },
+          { day: 1, stage: "HARD Stage", start: "21:00", end: "22:15", artist: "Zeds Dead" },
+          { day: 1, stage: "HARD Stage", start: "22:45", end: "00:00", artist: "Skrillex" },
+          { day: 1, stage: "HARDER Stage", start: "20:00", end: "21:30", artist: "Dom Dolla" },
+          { day: 1, stage: "HARDER Stage", start: "21:30", end: "23:00", artist: "John Summit" },
+          { day: 1, stage: "HARDER Stage", start: "23:00", end: "00:30", artist: "Fisher" },
+          { day: 1, stage: "Green Stage", start: "20:30", end: "22:00", artist: "Subtronics" },
+          { day: 1, stage: "Green Stage", start: "22:00", end: "23:30", artist: "Excision" },
+          { day: 1, stage: "Pink Stage", start: "21:00", end: "22:30", artist: "Sara Landry" },
+          { day: 1, stage: "Pink Stage", start: "22:30", end: "00:00", artist: "Anyma" }
+        ]
+      },
+      {
+        id: "elements-2027", name: "Elements Festival", city: "Long Pond, PA", dates: "Aug 13–16, 2027", start: "2027-08-13", genre: "House · Techno · Bass · Melodic",
+        stages: ["Earth", "Air", "Fire", "Water"], walkDefault: 10,
+        transit: { "Air||Earth": 9, "Earth||Fire": 12, "Earth||Water": 11, "Air||Fire": 8, "Air||Water": 10, "Fire||Water": 9 },
+        sets: [
+          { day: 1, stage: "Earth", start: "21:00", end: "22:30", artist: "Lane 8" },
+          { day: 1, stage: "Earth", start: "22:30", end: "00:00", artist: "Above & Beyond" },
+          { day: 1, stage: "Air", start: "21:30", end: "23:00", artist: "Bicep" },
+          { day: 1, stage: "Air", start: "23:00", end: "00:30", artist: "Four Tet" },
+          { day: 1, stage: "Fire", start: "22:00", end: "23:30", artist: "Subtronics" },
+          { day: 1, stage: "Fire", start: "23:30", end: "01:00", artist: "Liquid Stranger" },
+          { day: 1, stage: "Water", start: "22:30", end: "00:00", artist: "Chris Lake" },
+          { day: 1, stage: "Water", start: "00:00", end: "01:30", artist: "Michael Bibi" }
+        ]
+      },
+      {
+        id: "mysteryland-2027", name: "Mysteryland", city: "Haarlemmermeer, NL", dates: "Aug 27–29, 2027", start: "2027-08-27", genre: "Mainstage · Hardstyle · House · Techno",
+        stages: ["Main Stage", "Q-dance", "The Boat", "Tunnel"], walkDefault: 11,
+        transit: { "Main Stage||Q-dance": 12, "Main Stage||The Boat": 9, "Main Stage||Tunnel": 10, "Q-dance||The Boat": 8, "Q-dance||Tunnel": 11, "The Boat||Tunnel": 7 },
+        sets: [
+          { day: 1, stage: "Main Stage", start: "17:00", end: "18:15", artist: "Lost Frequencies" },
+          { day: 1, stage: "Main Stage", start: "18:30", end: "19:45", artist: "Oliver Heldens" },
+          { day: 1, stage: "Main Stage", start: "20:00", end: "21:15", artist: "Afrojack" },
+          { day: 1, stage: "Main Stage", start: "21:30", end: "23:00", artist: "Hardwell" },
+          { day: 1, stage: "Q-dance", start: "17:30", end: "19:00", artist: "Coone" },
+          { day: 1, stage: "Q-dance", start: "19:00", end: "20:30", artist: "D-Block & S-te-Fan" },
+          { day: 1, stage: "Q-dance", start: "20:30", end: "22:00", artist: "Headhunterz" },
+          { day: 1, stage: "The Boat", start: "18:00", end: "19:30", artist: "Chris Stussy" },
+          { day: 1, stage: "The Boat", start: "19:30", end: "21:00", artist: "Joris Voorn" },
+          { day: 1, stage: "The Boat", start: "21:00", end: "22:30", artist: "Kölsch" },
+          { day: 1, stage: "Tunnel", start: "18:30", end: "20:00", artist: "Klangkuenstler" },
+          { day: 1, stage: "Tunnel", start: "20:00", end: "22:00", artist: "Sara Landry" }
+        ]
+      },
+      {
+        id: "arc-2027", name: "ARC Music Festival", city: "Chicago, IL", dates: "Sep 4–6, 2027", start: "2027-09-04", genre: "House · Techno",
+        stages: ["The Grid", "Expo", "Elrow"], walkDefault: 8,
+        transit: { "Expo||The Grid": 9, "Elrow||The Grid": 7, "Elrow||Expo": 8 },
+        sets: [
+          { day: 1, stage: "The Grid", start: "18:00", end: "19:30", artist: "Kölsch" },
+          { day: 1, stage: "The Grid", start: "19:30", end: "21:00", artist: "Adam Beyer" },
+          { day: 1, stage: "The Grid", start: "21:00", end: "22:30", artist: "Charlotte de Witte" },
+          { day: 1, stage: "Expo", start: "18:30", end: "20:00", artist: "Green Velvet" },
+          { day: 1, stage: "Expo", start: "20:00", end: "21:30", artist: "Honey Dijon" },
+          { day: 1, stage: "Expo", start: "21:30", end: "23:00", artist: "Black Coffee" },
+          { day: 1, stage: "Elrow", start: "19:00", end: "20:30", artist: "Patrick Topping" },
+          { day: 1, stage: "Elrow", start: "20:30", end: "22:00", artist: "Fisher" }
+        ]
+      },
+      {
+        id: "imagine-2027", name: "Imagine Music Festival", city: "Rome, GA", dates: "Sep 17–19, 2027", start: "2027-09-17", genre: "Bass · House · Trance",
+        stages: ["Oceania", "Amazonia", "Aeros", "Disco Inferno"], walkDefault: 10,
+        transit: { "Amazonia||Oceania": 10, "Aeros||Oceania": 12, "Disco Inferno||Oceania": 8, "Aeros||Amazonia": 9, "Amazonia||Disco Inferno": 11, "Aeros||Disco Inferno": 10 },
+        sets: [
+          { day: 1, stage: "Oceania", start: "20:00", end: "21:15", artist: "Said The Sky" },
+          { day: 1, stage: "Oceania", start: "21:30", end: "22:45", artist: "Illenium" },
+          { day: 1, stage: "Oceania", start: "23:00", end: "00:30", artist: "Excision" },
+          { day: 1, stage: "Amazonia", start: "20:30", end: "22:00", artist: "Level Up" },
+          { day: 1, stage: "Amazonia", start: "22:00", end: "23:30", artist: "Wooli" },
+          { day: 1, stage: "Amazonia", start: "23:30", end: "01:00", artist: "Subtronics" },
+          { day: 1, stage: "Aeros", start: "21:00", end: "22:30", artist: "Gareth Emery" },
+          { day: 1, stage: "Aeros", start: "22:30", end: "00:00", artist: "Above & Beyond" },
+          { day: 1, stage: "Disco Inferno", start: "21:30", end: "23:00", artist: "Gorgon City" },
+          { day: 1, stage: "Disco Inferno", start: "23:00", end: "00:30", artist: "Chris Lake" }
+        ]
+      },
+      {
+        id: "lost-lands-2027", name: "Lost Lands", city: "Thornville, OH", dates: "Sep 24–26, 2027", start: "2027-09-24", genre: "Bass · Dubstep",
+        stages: ["Prehistoric Paradox", "Wompy Woods", "Cave of Souls", "Subsidia"], walkDefault: 12,
+        transit: { "Prehistoric Paradox||Wompy Woods": 12, "Cave of Souls||Prehistoric Paradox": 15, "Prehistoric Paradox||Subsidia": 10, "Cave of Souls||Wompy Woods": 9, "Subsidia||Wompy Woods": 11, "Cave of Souls||Subsidia": 8 },
+        sets: [
+          { day: 1, stage: "Prehistoric Paradox", start: "20:00", end: "21:15", artist: "Sullivan King" },
+          { day: 1, stage: "Prehistoric Paradox", start: "21:30", end: "22:45", artist: "Svdden Death" },
+          { day: 1, stage: "Prehistoric Paradox", start: "23:00", end: "00:15", artist: "Subtronics" },
+          { day: 1, stage: "Prehistoric Paradox", start: "00:30", end: "02:00", artist: "Excision" },
+          { day: 1, stage: "Wompy Woods", start: "20:30", end: "22:00", artist: "Space Laces" },
+          { day: 1, stage: "Wompy Woods", start: "22:00", end: "23:30", artist: "Marauda" },
+          { day: 1, stage: "Wompy Woods", start: "23:30", end: "01:00", artist: "Kai Wachi" },
+          { day: 1, stage: "Cave of Souls", start: "21:00", end: "22:30", artist: "Peekaboo" },
+          { day: 1, stage: "Cave of Souls", start: "22:30", end: "00:00", artist: "LSDREAM" },
+          { day: 1, stage: "Subsidia", start: "21:30", end: "23:00", artist: "Level Up" },
+          { day: 1, stage: "Subsidia", start: "23:00", end: "00:30", artist: "Wooli" }
+        ]
+      },
     ],
     tours: [
       {
-        id: "afterlife-2027", name: "Afterlife (Tale of Us) — Tour Night", city: "Arena / one room", dates: "2027 tour", kind: "tour",
+        id: "afterlife-2027", name: "Afterlife (Tale of Us) — Tour Night", city: "Arena / one room", dates: "2027 tour", genre: "Melodic Techno", kind: "tour",
         stages: ["Main Room"], walkDefault: 0, transit: {},
         sets: [
           { day: 1, stage: "Main Room", start: "21:00", end: "22:00", artist: "Mathame" },
@@ -722,7 +1228,7 @@ const Data = {
         ]
       },
       {
-        id: "warehouse-night", name: "Warehouse Night (Club) — 4 rooms", city: "Club, multi-room", dates: "template", kind: "tour",
+        id: "warehouse-night", name: "Warehouse Night (Club) — 4 rooms", city: "Club, multi-room", dates: "template", genre: "House · Techno", kind: "tour",
         stages: ["Room 1", "Room 2", "Room 3", "Room 4"], walkDefault: 3,
         transit: { "Room 1||Room 2": 2, "Room 1||Room 3": 4, "Room 1||Room 4": 5, "Room 2||Room 3": 3, "Room 2||Room 4": 4, "Room 3||Room 4": 2 },
         sets: [
@@ -737,7 +1243,7 @@ const Data = {
     ],
     demo: [
       {
-        id: "gramercy", name: "Gramercy Music Festival (demo, fictional)", city: "Demo", dates: "sample", kind: "demo",
+        id: "gramercy", name: "Gramercy Music Festival (demo, fictional)", city: "Demo", dates: "sample", genre: "Demo", kind: "demo",
         stages: ["Main Stage", "The Tent", "The Warehouse"], walkDefault: 8,
         transit: { "Main Stage||The Tent": 5, "Main Stage||The Warehouse": 12, "The Tent||The Warehouse": 8 },
         sets: [
@@ -989,7 +1495,10 @@ const UI = {
       const n = state.festival.sets.filter(s => s.day === d).length;
       return `<span class="pill pill-steel">Day ${d}: ${n} sets</span>`;
     }).join(" ");
+    const f = state.festival;
+    const meta = [f.dates, f.city, f.genre].filter(Boolean).map(UI.esc).join(" · ");
     UI.el("scheduleSummary").innerHTML = `
+      ${meta ? `<p class="hint" style="margin:-6px 0 12px;color:var(--ink-dim)">${meta}</p>` : ""}
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">${byDay}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         ${state.festival.stages.map(st => `<span class="pill" style="background:${UI.stageColor(st)}1f;color:${UI.stageColor(st)};border:1px solid ${UI.stageColor(st)}55;">${UI.esc(st)}</span>`).join(" ")}
@@ -1243,7 +1752,11 @@ body{background:#060607;color:#f6f6f8;font-family:-apple-system,BlinkMacSystemFo
 /* --------------------------- Wiring / init --------------------------- */
 function loadFestival(fest) {
   state.festival = fest;
-  state.transit = Object.assign({}, fest.transit || {}, state.transit);
+  // Normalize authored transit keys to the canonical sorted form so lookups always hit,
+  // regardless of the order a stage pair was written in.
+  const norm = {};
+  for (const k in (fest.transit || {})) { const [a, b] = k.split("||"); if (a && b) norm[Engine.transitKey(a, b)] = fest.transit[k]; }
+  state.transit = Object.assign({}, norm, state.transit);
   const wd = fest.walkDefault != null ? fest.walkDefault : 5;
   for (let i = 0; i < fest.stages.length; i++)
     for (let j = i + 1; j < fest.stages.length; j++) {
@@ -1277,20 +1790,37 @@ function dismissIntro(fast) {
 }
 
 function init() {
-  // Build grouped library dropdown
-  const sel = UI.el("sampleSelect");
+  // Build the library dropdown: grouped, sorted by date, filterable by name/city/month/genre.
+  const sel = UI.el("sampleSelect"), filterEl = UI.el("libFilter");
   const groups = [["festivals", "Festivals · 2026–2027"], ["tours", "Tours & Club Nights"], ["demo", "Demo"]];
-  for (const [key, label] of groups) {
-    const og = document.createElement("optgroup"); og.label = label;
-    for (const e of Data.library[key]) {
-      const opt = document.createElement("option");
-      opt.value = e.id;
-      opt.textContent = e.kind ? e.name : `${e.name} · ${e.dates} · ${e.city}`;
-      og.appendChild(opt);
+  const totalSets = Object.values(Data.byId).reduce((n, e) => n + e.sets.length, 0);
+  function buildLibrary(q) {
+    q = (q || "").trim().toLowerCase();
+    const prev = sel.value;
+    sel.innerHTML = "";
+    let shown = 0, total = 0;
+    for (const [key, label] of groups) {
+      const entries = [...Data.library[key]].sort((a, b) => (a.start || "").localeCompare(b.start || ""));
+      const og = document.createElement("optgroup"); og.label = label;
+      for (const e of entries) {
+        total++;
+        const hay = [e.name, e.city, e.dates, e.genre, e.start].join(" ").toLowerCase();
+        if (q && !hay.includes(q)) continue;
+        const opt = document.createElement("option");
+        opt.value = e.id;
+        opt.textContent = e.kind ? e.name : `${e.name} · ${e.dates} · ${e.city}`;
+        og.appendChild(opt); shown++;
+      }
+      if (og.children.length) sel.appendChild(og);
     }
-    sel.appendChild(og);
+    if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
+    UI.el("libCount").textContent = q
+      ? `${shown} of ${total} events match “${q}”`
+      : `${total} events · ${totalSets} sets · sorted by date`;
   }
-  sel.value = "ade-2026";
+  buildLibrary("");
+  if (sel.options.length) sel.selectedIndex = 0;   // earliest upcoming event by default
+  filterEl.addEventListener("input", () => buildLibrary(filterEl.value));
 
   const saved = Store.load();
   if (saved && saved.festival) { state = Object.assign(state, saved); state.priorities = state.priorities || {}; state.transit = state.transit || {}; }
